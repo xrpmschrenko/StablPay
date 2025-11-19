@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>QuiptoPay Portal Demo</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      background: #ffffff;
+      color: #111111;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 960px;
+      padding: 32px 16px 48px;
+      margin: 0 auto;
+    }
+
+    .logo-section {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .logo-image {
+      max-width: 420px;
+      width: 100%;
+      height: auto;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+      padding: 24px;
+      max-width: 640px;
+      margin: 0 auto 24px;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 18px;
+        border-radius: 14px;
+      }
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 18px;
+    }
+
+    .field-group {
+      margin-bottom: 16px;
+    }
+
+    .field-label {
+      font-size: 13px;
+      color: #444;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .input-row > * {
+      flex: 1;
+    }
+
+    select,
+    input[type="text"],
+    input[type="number"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #d0d0d0;
+      font-size: 16px; /* prevents iOS zoom */
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      background: #ffffff;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    select:focus,
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="tel"]:focus {
+      border-color: #111111;
+      box-shadow: 0 0 0 1px #11111110;
+    }
+
+    .field-error select,
+    .field-error input {
+      border-color: #e53935;
+    }
+
+    .error-message {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #e53935;
+    }
+
+    .unit-label {
+      font-size: 11px;
+      color: #777;
+      align-self: center;
+      flex: 0;
+      padding-right: 2px;
+    }
+
+    .fee-row,
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .fee-row span:first-child {
+      color: #555;
+    }
+
+    .total-row {
+      font-weight: 600;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #e5e5e5;
+    }
+
+    .total-row span:first-child {
+      font-size: 15px;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .card-details-header {
+      margin-top: 14px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .scan-button {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 999px;
+      border: 1px solid #111;
+      background: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .scan-button:active {
+      transform: translateY(1px);
+    }
+
+    .primary-button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 11px 16px;
+      border-radius: 999px;
+      border: none;
+      background: #111111;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.05s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .primary-button:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+    }
+
+    .primary-button:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .note-text {
+      font-size: 12px;
+      color: #777;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    .success-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #e3f6eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      color: #1e8e3e;
+      font-size: 30px;
+    }
+
+    .success-title {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .success-body {
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 14px;
+    }
+
+    .success-breakdown {
+      background: #fafafa;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .success-breakdown div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .success-breakdown div:last-child {
+      margin-bottom: 0;
+    }
+
+    .receipt-section {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #444;
+    }
+
+    .receipt-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .receipt-row input {
+      flex: 1;
+    }
+
+    .secondary-button {
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid #111;
+      background: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .secondary-button:active {
+      transform: translateY(1px);
+    }
+
+    .camera-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .camera-modal {
+      background: #111;
+      border-radius: 16px;
+      max-width: 360px;
+      width: 90%;
+      padding: 16px;
+      color: #fff;
+    }
+
+    .camera-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .camera-close {
+      background: none;
+      border: none;
+      color: #aaa;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .camera-preview {
+      background: #000;
+      border-radius: 12px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 13px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .camera-warning {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #f5b74f;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="logo-section">
+      <img
+        src="https://i.ibb.co/hxfnRB53/Quipto-Pay-FULL.png"
+        alt="QuiptoPay"
+        class="logo-image"
+      />
+    </header>
+
+    <main id="payment-card" class="card">
+      <div class="card-title">Review &amp; enter payment</div>
+      <div class="card-subtitle">
+        You’ll pay with your debit card. The vendor receives USDC to their
+        wallet.
+      </div>
+
+      <div class="field-group" id="vendor-group">
+        <label class="field-label" for="vendorSelect">Vendor</label>
+        <select id="vendorSelect">
+          <option value="" disabled selected>Select vendor...</option>
+          <option value="sunny-acres">Sunny Acres Farm</option>
+          <option value="redondo-flowers">Redondo Flowers</option>
+          <option value="ocean-honey">Ocean View Honey Co.</option>
+          <option value="artisan-bread">Artisan Bread Collective</option>
+        </select>
+        <div class="error-message hidden"></div>
+      </div>
+
+      <div class="field-group" id="amount-group">
+        <label class="field-label" for="vendorAmount">
+          Vendor amount (crypto)
+          <span style="font-weight: normal; color: #777">
+            (how much USDC the vendor should receive)
+          </span>
+        </label>
+        <div class="input-row">
+          <input
+            id="vendorAmount"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="0.00"
+            inputmode="decimal"
+          />
+          <span class="unit-label">USDC</span>
+        </div>
+        <div class="error-message hidden"></div>
+      </div>
+
+      <div class="field-label" style="margin-top: 4px;">Vendor receives</div>
+      <div class="fee-row">
+        <span>Vendor receives</span>
+        <span id="vendorReceivesDisplay">0.00 USDC</span>
+      </div>
+      <div class="fee-row">
+        <span>Card processing fee (2.9% + $0.30)</span>
+        <span id="cardFeeDisplay">$0.00</span>
+      </div>
+      <div class="fee-row">
+        <span>Crypto Concierge fee (1.0%)</span>
+        <span id="ccFeeDisplay">$0.00</span>
+      </div>
+
+      <div class="total-row">
+        <span>Total charged to your card</span>
+        <span id="totalChargeDisplay">$0.00</span>
+      </div>
+
+      <div class="card-details-header">
+        <div class="section-label">Card details</div>
+        <button id="scanCardBtn" type="button" class="scan-button">
+          Scan card
+        </button>
+      </div>
+
+      <div class="field-group" id="name-group">
+        <label class="field-label" for="cardName">Name on card</label>
+        <input
+          id="cardName"
+          type="text"
+          placeholder="Full name"
+          autocomplete="cc-name"
+        />
+        <div class="error-message hidden"></div>
+      </div>
+
+      <div class="field-group" id="card-number-group">
+        <label class="field-label" for="cardNumber">Card number</label>
+        <input
+          id="cardNumber"
+          type="tel"
+          inputmode="numeric"
+          autocomplete="cc-number"
+          placeholder="1234 5678 9012 3456"
+        />
+        <div class="error-message hidden"></div>
+      </div>
+
+      <div class="input-row">
+        <div class="field-group" id="expiry-group">
+          <label class="field-label" for="cardExpiry">Expiry</label>
+          <input
+            id="cardExpiry"
+            type="tel"
+            inputmode="numeric"
+            autocomplete="cc-exp"
+            placeholder="MM/YY"
+          />
+          <div class="error-message hidden"></div>
+        </div>
+
+        <div class="field-group" id="cvc-group">
+          <label class="field-label" for="cardCvc">CVC</label>
+          <input
+            id="cardCvc"
+            type="tel"
+            inputmode="numeric"
+            autocomplete="cc-csc"
+            placeholder="123"
+          />
+          <div class="error-message hidden"></div>
+        </div>
+      </div>
+
+      <button id="payNowBtn" class="primary-button">
+        Pay now
+      </button>
+      <div class="note-text">
+        This is a demo prototype. In production, card details are processed
+        securely via a payment provider. QuiptoPay / Crypto Concierge never
+        stores your card number.
+      </div>
+    </main>
+
+    <section id="success-card" class="card hidden">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Payment successful</div>
+      <div class="success-body" id="successMessageMain">
+        You’ve just paid your vendor.
+      </div>
+
+      <div class="success-breakdown">
+        <div>
+          <span>Vendor</span>
+          <span id="successVendorName">–</span>
+        </div>
+        <div>
+          <span>Vendor receives</span>
+          <span id="successVendorAmount">–</span>
+        </div>
+        <div>
+          <span>Total charged to your card</span>
+          <span id="successTotalCharged">–</span>
+        </div>
+      </div>
+
+      <div class="receipt-section">
+        Want a text receipt?
+        <div class="receipt-row">
+          <input
+            id="receiptPhone"
+            type="tel"
+            placeholder="Mobile number (optional)"
+          />
+          <button class="secondary-button" type="button">
+            Save
+          </button>
+        </div>
+        <div class="note-text">
+          You’ll also see this payment on your bank or card statement under
+          QuiptoPay / Crypto Concierge.
+        </div>
+      </div>
+
+      <button id="newPaymentBtn" class="primary-button" style="margin-top:18px;">
+        Pay another vendor
+      </button>
+    </section>
+  </div>
+
+  <div id="cameraOverlay" class="camera-overlay">
+    <div class="camera-modal">
+      <div class="camera-header">
+        <span>Card scan (demo)</span>
+        <button class="camera-close" type="button" id="cameraCloseBtn">×</button>
+      </div>
+      <div class="camera-preview">
+        <video id="cameraVideo" autoplay playsinline></video>
+        <span id="cameraPlaceholder">Camera preview will appear here</span>
+      </div>
+      <div class="camera-warning" id="cameraWarning">
+        Camera access requires a secure (https) connection and browser support.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const vendorSelect = document.getElementById("vendorSelect");
+      const vendorAmount = document.getElementById("vendorAmount");
+      const vendorReceivesDisplay = document.getElementById(
+        "vendorReceivesDisplay"
+      );
+      const cardFeeDisplay = document.getElementById("cardFeeDisplay");
+      const ccFeeDisplay = document.getElementById("ccFeeDisplay");
+      const totalChargeDisplay = document.getElementById("totalChargeDisplay");
+
+      const payNowBtn = document.getElementById("payNowBtn");
+
+      const paymentCard = document.getElementById("payment-card");
+      const successCard = document.getElementById("success-card");
+
+      const cardName = document.getElementById("cardName");
+      const cardNumber = document.getElementById("cardNumber");
+      const cardExpiry = document.getElementById("cardExpiry");
+      const cardCvc = document.getElementById("cardCvc");
+
+      const successVendorName = document.getElementById("successVendorName");
+      const successVendorAmount = document.getElementById("successVendorAmount");
+      const successTotalCharged = document.getElementById("successTotalCharged");
+      const successMessageMain = document.getElementById("successMessageMain");
+      const newPaymentBtn = document.getElementById("newPaymentBtn");
+
+      const scanCardBtn = document.getElementById("scanCardBtn");
+      const cameraOverlay = document.getElementById("cameraOverlay");
+      const cameraVideo = document.getElementById("cameraVideo");
+      const cameraPlaceholder = document.getElementById("cameraPlaceholder");
+      const cameraWarning = document.getElementById("cameraWarning");
+      const cameraCloseBtn = document.getElementById("cameraCloseBtn");
+
+      let cameraStream = null;
+
+      function parseAmount() {
+        const value = parseFloat(vendorAmount.value);
+        return isNaN(value) || value <= 0 ? 0 : value;
+      }
+
+      function formatMoney(v) {
+        return "$" + v.toFixed(2);
+      }
+
+      function updateFees() {
+        const amount = parseAmount();
+        vendorReceivesDisplay.textContent = amount.toFixed(2) + " USDC";
+
+        const cardFee = amount * 0.029 + 0.3;
+        const ccFee = amount * 0.01;
+        const total = amount + cardFee + ccFee;
+
+        cardFeeDisplay.textContent = formatMoney(amount ? cardFee : 0);
+        ccFeeDisplay.textContent = formatMoney(amount ? ccFee : 0);
+        totalChargeDisplay.textContent = formatMoney(amount ? total : 0);
+      }
+
+      vendorAmount.addEventListener("input", updateFees);
+
+      cardExpiry.addEventListener("input", () => {
+        let v = cardExpiry.value.replace(/\D/g, "");
+        if (v.length > 4) v = v.slice(0, 4);
+
+        if (v.length >= 3) {
+          cardExpiry.value = v.slice(0, 2) + "/" + v.slice(2);
+        } else {
+          cardExpiry.value = v;
+        }
+      });
+
+      function clearFieldError(groupId) {
+        const group = document.getElementById(groupId);
+        group.classList.remove("field-error");
+        const msg = group.querySelector(".error-message");
+        if (msg) {
+          msg.classList.add("hidden");
+          msg.textContent = "";
+        }
+      }
+
+      function setFieldError(groupId, message) {
+        const group = document.getElementById(groupId);
+        group.classList.add("field-error");
+        const msg = group.querySelector(".error-message");
+        if (msg) {
+          msg.textContent = message;
+          msg.classList.remove("hidden");
+        }
+      }
+
+      function validateForm() {
+        let valid = true;
+        let firstInvalid = null;
+
+        // clear previous errors
+        [
+          "vendor-group",
+          "amount-group",
+          "name-group",
+          "card-number-group",
+          "expiry-group",
+          "cvc-group",
+        ].forEach((id) => clearFieldError(id));
+
+        // vendor
+        if (!vendorSelect.value) {
+          valid = false;
+          setFieldError("vendor-group", "Please select a vendor.");
+          firstInvalid = firstInvalid || vendorSelect;
+        }
+
+        // amount
+        const amount = parseAmount();
+        if (!amount) {
+          valid = false;
+          setFieldError(
+            "amount-group",
+            "Enter how much USDC the vendor should receive."
+          );
+          firstInvalid = firstInvalid || vendorAmount;
+        }
+
+        // card name
+        if (!cardName.value.trim()) {
+          valid = false;
+          setFieldError("name-group", "Enter the name on the card.");
+          firstInvalid = firstInvalid || cardName;
+        }
+
+        // card number
+        const digits = cardNumber.value.replace(/\D/g, "");
+        if (digits.length < 13 || digits.length > 19) {
+          valid = false;
+          setFieldError(
+            "card-number-group",
+            "Enter a valid card number (numbers only)."
+          );
+          firstInvalid = firstInvalid || cardNumber;
+        }
+
+        // expiry MM/YY
+        const exp = cardExpiry.value.trim();
+        const expMatch = exp.match(/^(0[1-9]|1[0-2])\/\d{2}$/);
+        if (!expMatch) {
+          valid = false;
+          setFieldError("expiry-group", "Enter expiry as MM/YY.");
+          firstInvalid = firstInvalid || cardExpiry;
+        }
+
+        // CVC (3–4 digits)
+        const cvcDigits = cardCvc.value.replace(/\D/g, "");
+        if (cvcDigits.length < 3 || cvcDigits.length > 4) {
+          valid = false;
+          setFieldError("cvc-group", "Enter a valid CVC.");
+          firstInvalid = firstInvalid || cardCvc;
+        }
+
+        if (!valid && firstInvalid) {
+          firstInvalid.focus();
+        }
+
+        return valid;
+      }
+
+      payNowBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        if (!validateForm()) {
+          return;
+        }
+
+        // ensure the latest fee values are shown
+        updateFees();
+
+        const amount = parseAmount();
+        const vendorOption =
+          vendorSelect.options[vendorSelect.selectedIndex] || null;
+        const vendorNameText = vendorOption
+          ? vendorOption.textContent
+          : "Selected vendor";
+
+        successVendorName.textContent = vendorNameText;
+        successVendorAmount.textContent =
+          amount.toFixed(2) + " USDC";
+        successTotalCharged.textContent = totalChargeDisplay.textContent;
+
+        successMessageMain.textContent =
+          "You’ve just paid " +
+          vendorNameText +
+          " using your debit card. This is a demo only — no real charge was made.";
+
+        paymentCard.classList.add("hidden");
+        successCard.classList.remove("hidden");
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      newPaymentBtn.addEventListener("click", () => {
+        // reset form
+        vendorSelect.value = "";
+        vendorAmount.value = "";
+        cardName.value = "";
+        cardNumber.value = "";
+        cardExpiry.value = "";
+        cardCvc.value = "";
+        document.getElementById("receiptPhone").value = "";
+
+        // reset displays
+        vendorReceivesDisplay.textContent = "0.00 USDC";
+        cardFeeDisplay.textContent = "$0.00";
+        ccFeeDisplay.textContent = "$0.00";
+        totalChargeDisplay.textContent = "$0.00";
+
+        [
+          "vendor-group",
+          "amount-group",
+          "name-group",
+          "card-number-group",
+          "expiry-group",
+          "cvc-group",
+        ].forEach((id) => clearFieldError(id));
+
+        successCard.classList.add("hidden");
+        paymentCard.classList.remove("hidden");
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      // camera overlay demo
+      function stopCamera() {
+        if (cameraStream) {
+          cameraStream.getTracks().forEach((t) => t.stop());
+          cameraStream = null;
+        }
+      }
+
+      scanCardBtn.addEventListener("click", async () => {
+        cameraOverlay.style.display = "flex";
+        cameraPlaceholder.style.display = "flex";
+        cameraWarning.textContent =
+          "Attempting to access your camera (demo only, no data is captured).";
+
+        try {
+          if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            cameraStream = await navigator.mediaDevices.getUserMedia({
+              video: { facingMode: "environment" },
+            });
+            cameraVideo.srcObject = cameraStream;
+            cameraPlaceholder.style.display = "none";
+            cameraWarning.textContent =
+              "Point your card at the camera (this is a visual demo only).";
+          } else {
+            cameraWarning.textContent =
+              "Camera not supported in this browser.";
+          }
+        } catch (err) {
+          cameraWarning.textContent =
+            "Could not access camera. Check permissions or try another browser.";
+        }
+      });
+
+      cameraCloseBtn.addEventListener("click", () => {
+        stopCamera();
+        cameraOverlay.style.display = "none";
+      });
+
+      // close overlay if background is tapped
+      cameraOverlay.addEventListener("click", (e) => {
+        if (e.target === cameraOverlay) {
+          stopCamera();
+          cameraOverlay.style.display = "none";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
